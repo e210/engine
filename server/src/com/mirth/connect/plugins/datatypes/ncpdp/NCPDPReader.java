@@ -1,11 +1,6 @@
-/*
- * Copyright (c) Mirth Corporation. All rights reserved.
- * 
- * http://www.mirthcorp.com
- * 
- * The software in this package is published under the terms of the MPL license a copy of which has
- * been included with this distribution in the LICENSE.txt file.
- */
+// SPDX-License-Identifier: MPL-2.0
+// SPDX-FileCopyrightText: Mirth Corporation
+// SPDX-FileCopyrightText: 2025 Tony Germano
 
 package com.mirth.connect.plugins.datatypes.ncpdp;
 
@@ -16,15 +11,15 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.xerces.parsers.SAXParser;
+import org.openintegrationengine.engine.plugins.datatypes.AbstractXMLReader;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 
-public class NCPDPReader extends SAXParser {
+public class NCPDPReader extends AbstractXMLReader {
     private Logger logger = LogManager.getLogger(this.getClass());
-
+    
     private String segmentDelimeter;
     private String groupDelimeter;
     private String fieldDelimeter;
@@ -38,6 +33,8 @@ public class NCPDPReader extends SAXParser {
 
     @Override
     public void parse(InputSource input) throws SAXException, IOException {
+        ensureHandlerSet();
+
         // convert the InputSource to a String and trim the whitespace
         String message = IOUtils.toString(input.getCharacterStream()).trim();
 

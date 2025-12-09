@@ -1,11 +1,6 @@
-/*
- * Copyright (c) Mirth Corporation. All rights reserved.
- * 
- * http://www.mirthcorp.com
- * 
- * The software in this package is published under the terms of the MPL license a copy of which has
- * been included with this distribution in the LICENSE.txt file.
- */
+// SPDX-License-Identifier: MPL-2.0
+// SPDX-FileCopyrightText: Mirth Corporation
+// SPDX-FileCopyrightText: 2025 Tony Germano
 
 package com.mirth.connect.plugins.datatypes.hl7v2;
 
@@ -16,13 +11,14 @@ import java.util.StringTokenizer;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.xerces.parsers.SAXParser;
+import org.openintegrationengine.engine.plugins.datatypes.AbstractXMLReader;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-public class ER7Reader extends SAXParser {
+public class ER7Reader extends AbstractXMLReader {
     private Logger logger = LogManager.getLogger(this.getClass());
+
     private boolean handleRepetitions = false;
     private boolean handleSubcomponents = false;
     private String segmentDelimiter;
@@ -54,7 +50,10 @@ public class ER7Reader extends SAXParser {
         return builder.toString().trim();
     }
 
+    @Override
     public void parse(InputSource source) throws SAXException, IOException {
+        ensureHandlerSet();
+
         String message = getMessageFromSource(source);
         ContentHandler contentHandler = getContentHandler();
         contentHandler.startDocument();

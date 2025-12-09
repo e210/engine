@@ -1,11 +1,6 @@
-/*
- * Copyright (c) Mirth Corporation. All rights reserved.
- * 
- * http://www.mirthcorp.com
- * 
- * The software in this package is published under the terms of the MPL license a copy of which has
- * been included with this distribution in the LICENSE.txt file.
- */
+// SPDX-License-Identifier: MPL-2.0
+// SPDX-FileCopyrightText: Mirth Corporation
+// SPDX-FileCopyrightText: 2025 Tony Germano
 
 package com.mirth.connect.plugins.datatypes.delimited;
 
@@ -16,14 +11,13 @@ import java.util.ArrayList;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.xerces.parsers.SAXParser;
-import org.xml.sax.ContentHandler;
+import org.openintegrationengine.engine.plugins.datatypes.AbstractXMLReader;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import com.mirth.connect.util.StringUtil;
 
-public class DelimitedReader extends SAXParser {
+public class DelimitedReader extends AbstractXMLReader {
     private Logger logger = LogManager.getLogger(this.getClass());
 
     private DelimitedSerializationProperties serializationProperties;
@@ -49,8 +43,10 @@ public class DelimitedReader extends SAXParser {
         ungottenRawText = null;
     }
 
+    @Override
     public void parse(InputSource input) throws SAXException, IOException {
-
+        ensureHandlerSet();
+        
         // Parsing overview
         //
         // The incoming stream is a single message which is a collection of one
@@ -85,7 +81,6 @@ public class DelimitedReader extends SAXParser {
 
         // Start the document
         String documentHead = "delimited";
-        ContentHandler contentHandler = getContentHandler();
         contentHandler.startDocument();
 
         // Output <delimited>
@@ -118,7 +113,8 @@ public class DelimitedReader extends SAXParser {
                 contentHandler.startElement("", columnName, "", null);
 
                 // Output column value
-                contentHandler.characters(record.get(i).toCharArray(), 0, record.get(i).length());
+                String val = record.get(i);
+                contentHandler.characters(val.toCharArray(), 0, val.length());
 
                 // Output </columnN>
                 contentHandler.endElement("", columnName, "");

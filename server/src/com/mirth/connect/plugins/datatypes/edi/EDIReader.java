@@ -1,11 +1,6 @@
-/*
- * Copyright (c) Mirth Corporation. All rights reserved.
- * 
- * http://www.mirthcorp.com
- * 
- * The software in this package is published under the terms of the MPL license a copy of which has
- * been included with this distribution in the LICENSE.txt file.
- */
+// SPDX-License-Identifier: MPL-2.0
+// SPDX-FileCopyrightText: Mirth Corporation
+// SPDX-FileCopyrightText: 2025 Tony Germano
 
 package com.mirth.connect.plugins.datatypes.edi;
 
@@ -15,19 +10,17 @@ import java.util.StringTokenizer;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.xerces.parsers.SAXParser;
+import org.openintegrationengine.engine.plugins.datatypes.AbstractXMLReader;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 
-public class EDIReader extends SAXParser {
+public class EDIReader extends AbstractXMLReader {
     private Logger logger = LogManager.getLogger(this.getClass());
 
     private String segmentDelimiter;
-
     private String elementDelimiter;
-
     private String subelementDelimiter;
 
     public EDIReader(String segmentDelimiter, String elementDelimiter, String subelementDelimiter) {
@@ -37,7 +30,10 @@ public class EDIReader extends SAXParser {
         return;
     }
 
+    @Override
     public void parse(InputSource input) throws SAXException, IOException {
+        ensureHandlerSet();
+
         // Read the data from the InputSource
         BufferedReader in = new BufferedReader(input.getCharacterStream());
         String nextLine = "";
@@ -175,5 +171,4 @@ public class EDIReader extends SAXParser {
         contentHandler.endElement("", documentHead, "");
         contentHandler.endDocument();
     }
-
 }
