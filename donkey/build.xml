@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="donkey" default="build" basedir=".">
+<project name="donkey" default="build" basedir="." xmlns:unless="ant:unless">
 	<target name="init">
 		<property file="build.properties" />
 		
 		<path id="classpath">
 			<fileset dir="${lib}" includes="**/*.jar" />
 		</path>
+
+		<fail message="Required property archive.entry.date is not set"
+			unless:set="archive.entry.date" />
 	</target>
 	
 	<target name="clean" depends="init">
@@ -32,7 +35,7 @@
 	</target>
 	
 	<target name="build-server" depends="compile">
-		<jar destfile="${setup}/${server.jar}" basedir="${classes}">
+		<jar destfile="${setup}/${server.jar}" basedir="${classes}" modificationTime="${archive.entry.date}">
 			<include name="com/mirth/connect/donkey/server/**" />
 			<include name="com/mirth/connect/donkey/model/**" />
 			<include name="com/mirth/connect/donkey/util/**" />
@@ -44,7 +47,7 @@
 	</target>
 	
 	<target name="build-model" depends="compile">
-		<jar destfile="${setup}/${model.jar}" basedir="${classes}">
+		<jar destfile="${setup}/${model.jar}" basedir="${classes}" modificationTime="${archive.entry.date}">
 			<include name="com/mirth/connect/donkey/model/**" />
 			<include name="com/mirth/connect/donkey/util/**" />
 		</jar>

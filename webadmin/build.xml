@@ -1,4 +1,7 @@
-<project name="webadmin" basedir="." default="dist">
+<project name="webadmin" basedir="." default="dist" xmlns:unless="ant:unless">
+	<fail message="Required property archive.entry.date is not set"
+		unless:set="archive.entry.date" />
+
 	<!-- Initialize these values in case the build is not being called form the main OIE build -->
 	<property name="server" value="../server" />
 	<property name="server.setup" value="../server/setup" />
@@ -66,7 +69,7 @@
 	</target>
 
 	<target name="dist" depends="compile">
-		<war destfile="${dist}/webadmin.war" webxml="${build.web}/WEB-INF/web.xml">
+		<war destfile="${dist}/webadmin.war" webxml="${build.web}/WEB-INF/web.xml" modificationTime="${archive.entry.date}">
 			<fileset dir="${build.web}" />
 			<classes dir="${build.classes}" />
 		</war>

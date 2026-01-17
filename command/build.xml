@@ -1,10 +1,13 @@
-<project name="mirth-cli" basedir="." default="build">
+<project name="mirth-cli" basedir="." default="build" xmlns:unless="ant:unless">
 	<target name="init">
 		<property file="build.properties" />
 
 		<path id="classpath">
 			<fileset dir="${lib}" includes="*.jar" />
 		</path>
+		
+		<fail message="Required property archive.entry.date is not set"
+			unless:set="archive.entry.date" />
 	</target>
 
 	<target name="clean" depends="init">
@@ -38,12 +41,12 @@
 			<fileset dir="${lib}" />
 		</copy>
 
-		<jar destfile="${build}/${cli.jar}" basedir="${classes}">
+		<jar destfile="${build}/${cli.jar}" basedir="${classes}" modificationTime="${archive.entry.date}">
 			<include name="com/mirth/connect/cli/**" />
 			<exclude name="com/mirth/connect/cli/launcher/**" />
 		</jar>
 
-		<jar destfile="${build}/${cli-launcher.jar}" basedir="${classes}">
+		<jar destfile="${build}/${cli-launcher.jar}" basedir="${classes}" modificationTime="${archive.entry.date}">
 			<include name="com/mirth/connect/cli/launcher/**" />
 
 			<manifest>
