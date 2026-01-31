@@ -190,10 +190,10 @@ function Parse-VmOptions([string] $File) {
             $script:Classpath.Add($matches[1].Trim())
         }
         elseif ($line -match '^-classpath/a\s+(.+)') {
-            $script:Classpath.Add($($matches[1].Trim())
+            $script:Classpath.Add($matches[1].Trim())
         }
         elseif ($line -match '^-classpath/p\s+(.+)') {
-            $script:Classpath.Insert(0, $($matches[1].Trim())
+            $script:Classpath.Insert(0, $matches[1].Trim())
         }
         elseif ($line -match '^-java-cmd\s+(.+)') {
             # Store the path and the file it was found in. Validation is deferred.
