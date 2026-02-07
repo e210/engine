@@ -97,7 +97,7 @@
 		<mkdir dir="${code-coverage-reports}" />
 		
 		<jacoco:coverage destfile="${code-coverage-reports}/jacoco.exec" xmlns:jacoco="antlib:org.jacoco.ant" exclclassloader="sun.reflect.DelegatingClassLoader:javassist.Loader" >
-			<junit haltonfailure="false" fork="true" forkmode="once">
+			<junit haltonfailure="false" failureproperty="test.failed" errorproperty="test.failed" fork="true" forkmode="once">
 				<jvmarg value="-Xms128m" />
 				<jvmarg value="-Xmx2048m" />
 				<!-- https://stackoverflow.com/questions/54205486 -->
@@ -114,6 +114,8 @@
 				</batchtest>
 			</junit>
 		</jacoco:coverage>
+
+		<fail if="test.failed" message="Unit tests failed. Check reports for details."/>
 	</target>
 	
 	<target name="remove-classes" depends="init">
