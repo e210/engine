@@ -68,15 +68,22 @@
 		<property name="plugins.xsltstep" value="${extensions}/xsltstep" />
 	</target>
 
-	<target name="clean" depends="init">
+	<target name="clean" depends="init, clean-legacy-dirs">
 		<delete dir="${logs}" />
 		<mkdir dir="${logs}" />
 
 		<delete dir="${classes}" />
+		<delete dir="${test_classes}" />
 		<delete dir="${setup}" />
 		<delete dir="${dist}" />
 		<delete dir="${build.dir}" />
 		<delete dir="${docs.javadocs}" />
+	</target>
+
+	<target name="clean-legacy-dirs" depends="init">
+		<delete dir="${basedir}/code-coverage-reports" />
+		<delete dir="${basedir}/junit-reports" />
+		<delete dir="${basedir}/junit-html" />
 	</target>
 
 	<target name="compile" depends="clean, init, create-javadocs">

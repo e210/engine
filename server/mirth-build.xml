@@ -212,4 +212,11 @@
 	<target name="build-custom" depends="init">
 		<ant antfile="custom-extensions.xml" target="build" />
 	</target>
+
+	<target name="clean-all" depends="init" >
+		<ant antfile="${donkey}/build.xml" dir="${donkey}" target="clean" />
+		<ant antfile="${client}/ant-build.xml" dir="${client}" target="clean" />
+		<ant antfile="${server}/build.xml" dir="${server}" target="clean" />
+		<ant antfile="${cli}/build.xml" dir="${cli}" target="clean" />
+	</target>
 </project>
