@@ -25,15 +25,6 @@
 		</copy>
 	</target>
 	
-	<!-- WebAdmin -->
-	<target name="build-webadmin" depends="init">
-	<!-- 
-		<ant antfile="${webadmin}/build.xml" dir="${webadmin}" target="dist"/>
-		<copy file="${webadmin}/dist/webadmin.war" todir="${server.build}/webapps" />
-		<copy file="${webadmin}/dist/webadmin.war" todir="${server.setup}/webapps" />
-	-->
-	</target>
-	
 	<!-- Server extensions -->
 	<target name="build-server-extensions" depends="build-donkey">
 		<ant antfile="${server}/build.xml" dir="${server}" target="create-plugins" />
@@ -66,23 +57,6 @@
 		
 		<copy todir="${server.setup}/extensions">
 			<fileset dir="${client}/dist/extensions" />
-		</copy>
-	</target>
-
-	<!-- Manager -->
-	<target name="build-manager" depends="build-client">
-		<copy file="${donkey.setup}/donkey-model.jar" todir="${manager}/lib" />
-		<copy file="${server.setup}/server-lib/mirth-client-core.jar" todir="${manager}/lib" />
-		<copy file="${server.setup}/server-lib/mirth-crypto.jar" todir="${manager}/lib" />
-
-		<ant antfile="${manager}/ant-build.xml" dir="${manager}" target="build" />
-
-		<copy file="${manager}/dist/mirth-manager-launcher.jar" todir="${server.setup}" />
-
-		<copy todir="${server.setup}/manager-lib">
-			<fileset dir="${manager}/lib">
-				<exclude name="mirth-client.jar" />
-			</fileset>
 		</copy>
 	</target>
 
@@ -126,7 +100,7 @@
 		<antcall target="test-run" />
 	</target>
 
-	<target name="build" depends="build-manager, build-cli, build-webadmin">
+	<target name="build" depends="build-cli">
 		<ant antfile="${server}/build.xml" dir="${server}" target="create-setup">
 			<property name="version" value="${version}" />
 		</ant>
@@ -142,7 +116,7 @@
 		<antcall target="build-time-tests" />
 	</target>
 
-	<target name="dist" depends="build-manager, build-cli, build-webadmin">
+	<target name="dist" depends="build-cli">
 		<echo>Application version: ${version}</echo>
 
 		<ant antfile="${server}/build.xml" dir="${server}" target="create-dist">
@@ -174,15 +148,7 @@
 		</header>
 
 		<header headerFile="${server}/license-header.txt">
-			<fileset dir="${manager}" includes="**/*.java" excludes="src/com/mirth/connect/manager/BareBonesBrowserLaunch.java" />
-		</header>
-		
-		<header headerFile="${server}/license-header.txt">
 			<fileset dir="${donkey}" includes="**/*.java" />
-		</header>
-		
-		<header headerFile="${server}/license-header.txt">
-			<fileset dir="${webadmin}" includes="**/*.java" />
 		</header>
 	</target>
 

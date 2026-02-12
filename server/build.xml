@@ -966,7 +966,6 @@
 		<mkdir dir="${setup.public_api_html}" />
 		<mkdir dir="${setup.server.lib}" />
 		<mkdir dir="${setup.client.lib}" />
-		<mkdir dir="${setup.manager.lib}" />
 		<mkdir dir="${setup.cli.lib}" />
 		<mkdir dir="${setup.logs}" />
 		<mkdir dir="${setup.docs}" />
